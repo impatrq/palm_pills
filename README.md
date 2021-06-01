@@ -7,6 +7,9 @@ Este es el repositorio del equipo Palm Pills
 # Integrantes
 - Pagnoni
 - Alfredo
+- Otero
+- Boiero
+- Diaz
 
 # Funcionalidades
 - programación de alarma
