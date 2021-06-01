@@ -5,8 +5,11 @@ Este es el repositorio del equipo Palm Pills
 - pcb de circuitos
 
 # Integrantes
-- Pagnoni
 - Alfredo
+- Boiero
+- Diaz
+- Otero
+- Pagnoni
 
 # Funcionalidades
 - programación de alarma
