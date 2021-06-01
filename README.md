@@ -10,7 +10,6 @@ Este es el repositorio del equipo Palm Pills
 - Diaz
 - Otero
 - Pagnoni
-  
 
 # Funcionalidades
 - programación de alarma
