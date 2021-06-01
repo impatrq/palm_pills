@@ -5,3 +5,6 @@ Este es el repositorio del equipo Palm Pills
 - pcb de circuitos
 
 # Funcionalidades
+- programación de alarma
+- hora actual disponible
+- indicación de gabinetes
