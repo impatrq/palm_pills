@@ -17,3 +17,4 @@ Este es el repositorio del equipo Palm Pills
 - indicación de gabinetes
 - aviso sonoro
 - indicacion luminica
+- indicacion alarma por voz
