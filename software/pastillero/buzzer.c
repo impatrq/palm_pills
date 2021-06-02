@@ -2,7 +2,6 @@
 #fuses HS,NOWDT,NOPUT,NOPROTECT                 //Configuración de fusibles.
 #use delay (clock=8M)                           //Frecuencia de Oscilador 8MHz.
 #BYTE port_b = 0xF81                            //Dirección de Puerto B en memoria.
-#BYTE port_d = 0xF83                            //Dirección de puerto D en memoria.
 
 int x=0;                                        //Variable x tipo entero, para el contador.
 
@@ -27,7 +26,6 @@ Interrupcion_Pulso() //Asignamos el nombre de "Interrupcion_Pulso"
 void main (void)                                //Funcion principal main
 {
    set_tris_b(0b00000001);                      //Establecemos el pin RB0 como entrada.
-   set_tris_d(0b00000000);                      //Establecemos el Puerto D como salida.
    enable_interrupts(GLOBAL);                   //Habilitamos todas las interrupciones.
    enable_interrupts(INT_EXT);                  //Habilitamos especificamente la interrupción externa RB0.
 
