@@ -1,0 +1,8 @@
+*.cof
+*.err
+*.esym
+*.hex
+*.lst
+*.sta
+*.sym
+*.tre
