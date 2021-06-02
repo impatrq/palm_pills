@@ -10,9 +10,9 @@ void diez_pulsaciones()
 {
     for (x = 1; x <= 10; x++)
     {
-        output_high(PIN_D1);
+        output_high(PIN_B5);
         delay_ms(10);
-        output_low(PIN_D1);
+        output_low(PIN_B5);
         delay_ms(60);
     }
 }
