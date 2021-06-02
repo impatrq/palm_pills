@@ -6,19 +6,22 @@
 
 int x=0;                                        //Variable x tipo entero, para el contador.
 
-#int_ext                                        //Habilitamos la librería de Interrrupción Externa  
-Interrupcion_Pulso()                            //Asignamos el nombre de "Interrupcion_Pulso"                
-                                                
+void diez_pulsaciones()
 {
-   ext_int_edge(H_TO_L);                        //Activa la interrupción en RB0 por flanco de bajada.
-   for (x=1; x<=10; x++)
-   {
+    for (x = 1; x <= 10; x++)
+    {
+        output_high(PIN_D1);
+        delay_ms(10);
+        output_low(PIN_D1);
+        delay_ms(60);
+    }
+}
 
-   output_high(PIN_D1);
-   delay_ms(10);
-   output_low(PIN_D1);
-   delay_ms(60);
-   }
+#int_ext             //Habilitamos la librería de Interrrupción Externa
+Interrupcion_Pulso() //Asignamos el nombre de "Interrupcion_Pulso"
+{
+    ext_int_edge(H_TO_L); //Activa la interrupción en RB0 por flanco de bajada.
+    diez_pulsaciones();   // Llamar a la funcion diez_pulsaciones
 }
 
 void main (void)                                //Funcion principal main
