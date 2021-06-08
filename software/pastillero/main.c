@@ -59,9 +59,8 @@ void alarms_read_display(){                      // Read and display alarm1 and 
   i2c_read(1);                                   // Skip alarm2 day/date register //salta el dia de alarm2
   control_reg = i2c_read(1);                     // Read the DS3231 control register //lee el control de registro de DS3231
   status_reg  = i2c_read(1);                     // Read the DS3231 status register //Lee las estaditicas del registro DS3231
-  i2c_read(1);                                   // Skip aging offset register //Omitir el registro offset
-  temperature_msb = i2c_read(1);                 // Read temperature MSB // Lee la temperatura MSB
-  temperature_lsb = i2c_read(0);                 // Read temperature LSB //Lee la temperatura LSB
+  i2c_read(1);                 // Read temperature MSB // Lee la temperatura MSB
+  i2c_read(0);                 // Read temperature LSB //Lee la temperatura LSB
   i2c_stop();                                    // Stop I2C protocol //Detencion del i2c
     // Convert BCD to decimal //convierte de BCD a Decimal
   alarm1_minute = (alarm1_minute >> 4) * 10 + (alarm1_minute & 0x0F);
