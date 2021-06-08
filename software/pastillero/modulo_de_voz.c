@@ -104,8 +104,11 @@ void write_Comand(unsigned char *cmd)
    }
 }
 
-int calculo_de_posicion(hora,gabinete) {
-return 1; 
+int calculo_de_posicion(int hora,int gabinete) {
+   
+int inicio = (gabinete - 1)*24;
+int posicion = inicio + hora; 
+return posicion; 
 }
 
 void main()
