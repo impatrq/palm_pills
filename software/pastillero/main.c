@@ -59,9 +59,8 @@ void alarms_read_display(){                      // Read and display alarm1 and 
   i2c_read(1);                                   // Skip alarm2 day/date register //salta el dia de alarm2
   control_reg = i2c_read(1);                     // Read the DS3231 control register //lee el control de registro de DS3231
   status_reg  = i2c_read(1);                     // Read the DS3231 status register //Lee las estaditicas del registro DS3231
-  i2c_read(1);                                   // Skip aging offset register //Omitir el registro offset
-  temperature_msb = i2c_read(1);                 // Read temperature MSB // Lee la temperatura MSB
-  temperature_lsb = i2c_read(0);                 // Read temperature LSB //Lee la temperatura LSB
+  i2c_read(1);                 // Read temperature MSB // Lee la temperatura MSB
+  i2c_read(0);                 // Read temperature LSB //Lee la temperatura LSB
   i2c_stop();                                    // Stop I2C protocol //Detencion del i2c
     // Convert BCD to decimal //convierte de BCD a Decimal
   alarm1_minute = (alarm1_minute >> 4) * 10 + (alarm1_minute & 0x0F);
@@ -78,29 +77,7 @@ void alarms_read_display(){                      // Read and display alarm1 and 
   alarm2[5]     = alarm2_hour   % 10  + 48;
   alarm2[4]     = alarm2_hour   / 10  + 48;
   alarm1_status = bit_test(control_reg, 0);      // Read alarm1 interrupt enable bit (A1IE) from DS3231 control register //Leer el bit de habilitación de interrupción de alarma1 (A1IE) del registro de control DS3231
-  alarm2_status = bit_test(control_reg, 1);      // Read alarm2 interrupt enable bit (A2IE) from DS3231 control register //Leer el bit de habilitación de interrupción de alarma2 (A2IE) del registro de control DS3231
-  if(temperature_msb < 0){
-    temperature_msb = abs(temperature_msb);
-    temperature[2] = '-';
-  }
-  else
-    temperature[2] = ' ';
-  temperature_lsb >>= 6;
-  temperature[4] = temperature_msb % 10  + 48;
-  temperature[3] = temperature_msb / 10  + 48;
-  if(temperature_lsb == 0 || temperature_lsb == 2){
-    temperature[7] = '0';
-    if(temperature_lsb == 0) temperature[6] = '0';
-    else                     temperature[6] = '5';
-  }
-  if(temperature_lsb == 1 || temperature_lsb == 3){
-    temperature[7] = '5';
-    if(temperature_lsb == 1) temperature[6] = '2';
-    else                     temperature[6] = '7';
-  }
-  temperature[8]  = 223;                         // Degree symbol //simbolo de grado
-  lcd_gotoxy(11, 1);                             // Go to column 10 row 1 //Va a la columna 10, fila 1
-  printf(lcd_putc, temperature);                 // Display temperature //Mostrar la temperatura
+  alarm2_status = bit_test(control_reg, 1);      // Read alarm2 interrupt enable bit (A2IE) from DS3231 control register //Leer el bit de habilitación de interrupción de alarma2 (A2IE) del registro de control DS3231                        
   lcd_gotoxy(21, 1);                             // Go to column 1 row 3 //Ir a la columna 1 fila 3
   printf(lcd_putc, alarm1);                      // Display alarm1 //Mostrar alarma 1
   lcd_gotoxy(38, 1);                             // Go to column 18 row 3 //Va a la columna 18, fila 3
