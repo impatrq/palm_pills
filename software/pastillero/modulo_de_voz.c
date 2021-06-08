@@ -110,14 +110,16 @@ int inicio = (gabinete - 1)*24;
 int posicion = inicio + hora; 
 return posicion; 
 }
-
-void main()
-{
-   int i, j;   
-   int posicion = calculo_de_posicion(18,2);
+void reproduccion_pista(int hora, int gabinete){
+   int posicion = calculo_de_posicion(hora,gabinete);
    dfplayer_pista(posicion);
    dfplayer_play();
-
+   delay_ms(5000);
+   return;
+}
+void main()
+{
+   int i, j;  
    delay_ms(2000);
    dfplayer_play();
    dfplayer_pista(1);
