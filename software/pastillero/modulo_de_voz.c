@@ -113,9 +113,11 @@ return posicion;
 
 void main()
 {
-   int i, j;
-   int h;
-   int g;
+   int i, j;   
+   int posicion = calculo_de_posicion(18,2);
+   dfplayer_pista(posicion);
+   dfplayer_play();
+
    delay_ms(2000);
    dfplayer_play();
    dfplayer_pista(1);
