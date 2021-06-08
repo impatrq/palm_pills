@@ -104,6 +104,10 @@ void write_Comand(unsigned char *cmd)
    }
 }
 
+int calculo_de_posicion(hora,gabinete) {
+return 1; 
+}
+
 void main()
 {
    int i, j;
