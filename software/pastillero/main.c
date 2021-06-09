@@ -187,6 +187,7 @@ int8 edit(parameter, x, y){
     }
   }
 }
+int A = 0;
 void main(){
   output_b(0);
   set_tris_b(0x0F);                              // Configure RB0 ~ 3 as input pins //Configurar RB0 ~ 3 como pines de entrada
