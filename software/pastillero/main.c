@@ -187,6 +187,7 @@ int8 edit(parameter, x, y){
     }
   }
 }
+int A = 0;
 void main(){
   output_b(0);
   set_tris_b(0x0F);                              // Configure RB0 ~ 3 as input pins //Configurar RB0 ~ 3 como pines de entrada
@@ -287,6 +288,30 @@ void main(){
     DS3231_read();                               // Read time and calendar parameters from DS3231 RTC // Leer los parámetros de tiempo y calendario de DS3231 RTC
     alarms_read_display();                       // Read and display alarms parameters // Leer y mostrar los parámetros de las alarmas
     DS3231_display();                            // Display time & calendar // Mostrar hora y calendario
+    lcd_putc("Gab:");
+    printf(lcd_putc, "%d", A);
+    lcd_gotoxy(2, 16);
+        if (input(pin_A0) == 0)
+        {
+          A++;
+          lcd_gotoxy(2, 16);
+            delay_ms(750);
+             if (A > 5)
+             {
+                A = 0;
+             }
+             }
+        if (input(pin_A1) == 0)
+        {
+            A--;
+            lcd_gotoxy(2, 16);
+            delay_ms(750);
+
+            if (A == 0)
+            {
+                A = 5;
+            }
+        }
     delay_ms(50);                                // Wait 50ms // Espera 50ms
   }
 }
