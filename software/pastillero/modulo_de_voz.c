@@ -1,24 +1,5 @@
-#include <16f877a.h>
-#fuses NOWDT
-#fuses PUT
-#fuses NOLVP
-#fuses NOPROTECT
-#use delay(clock = 4000000)
-#use rs232(uart1, baud = 9600)
-#USE standard_io(A)
-#USE standard_io(B)
-
+#include "modulo_de_voz.h"
 unsigned char comandoDFplayer[10] = {0x7E, 0xFF, 0x06, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xEF};
-
-void write_Comand(unsigned char *);
-void dfplayer_pista(unsigned char);
-void dfplayer_Pause(void);
-void dfplayer_Play(void);
-void dfplayer_Next(void);
-void dfplayer_Prev(void);
-void dfplayer_Volume(unsigned char);
-void dfplayer_Volume_up(void);
-void dfplayer_Volume_down(void);
 
 void dfplayer_pista(int pist)
 {
@@ -117,7 +98,7 @@ void reproduccion_pista(int hora, int gabinete){
    delay_ms(5000);
    return;
 }
-void main()
+/*void main()
 {
    int i, j;  
    delay_ms(2000);
@@ -141,4 +122,4 @@ void main()
       dfplayer_Volume_up();
       delay_ms(200);
    }
-}
+}*/
