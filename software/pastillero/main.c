@@ -8,10 +8,11 @@
 //End LCD module connections
 
 #include <16F877A.h>
-#fuses HS,NOWDT,NOPROTECT,NOLVP                       
+#fuses HS,NOWDT,NOPROTECT,NOLVP,PUT                       
 #use delay(clock = 8MHz)
 #use fast_io(B)
 #use fast_io(D)
+#use rs232(uart1, baud = 9600)
 #include <lcd.c>
 #use I2C(master, I2C1, FAST = 100000)
 
