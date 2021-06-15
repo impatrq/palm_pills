@@ -15,7 +15,7 @@
 #use rs232(uart1, baud = 9600)
 #include <lcd.c>
 #use I2C(master, I2C1, FAST = 100000)
-
+#include "modulo_de_voz.h"
 int1 alarm1_status, alarm2_status;
 char time[]     = "  :  :  ",
      calendar[] = "      /  /20  ",
