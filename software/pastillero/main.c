@@ -15,7 +15,7 @@
 #use rs232(uart1, baud = 9600)
 #include <lcd.c>
 #use I2C(master, I2C1, FAST = 100000)
-#include "modulo_de_voz.h"
+#include "modulo_de_voz.c"
 int1 alarm1_status, alarm2_status;
 char time[]     = "  :  :  ",
      calendar[] = "      /  /20  ",
@@ -197,6 +197,7 @@ void main(){
   enable_interrupts(INT_EXT_H2L);                // Enable external interrupt with edge from high to low // Habilita la interrupción externa con borde de mayor a menor
   lcd_init();                                    // Initialize LCD module //Inicia el modulo LCD
   lcd_putc('\f');                                // LCD clear //Limpio el LCD
+  reproduccion_pista(13, 1);
   while(TRUE){
     if(!input(PIN_B1)){                          // If RB1 button is pressed //Si se presiona el botón RB1
       i = 0;
