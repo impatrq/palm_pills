@@ -5,8 +5,6 @@
 #fuses NOPROTECT
 #use delay(clock = 4000000)
 #use rs232(uart1, baud = 9600)
-#USE standard_io(A)
-#USE standard_io(B)
 
 unsigned char comandoDFplayer[10] = {0x7E, 0xFF, 0x06, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xEF};
 
