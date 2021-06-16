@@ -29,6 +29,12 @@ void ext_isr(void){
   output_high(PIN_B4);
   clear_interrupt(INT_EXT);
 }
+diez_pulsaciones();
+Interrupcion_Pulso() //Asignamos el nombre de "Interrupcion_Pulso"
+{
+    ext_int_edge(H_TO_L); //Activa la interrupción en RB0 por flanco de bajada.
+    diez_pulsaciones();   // Llamar a la funcion diez_pulsaciones
+}
 void DS3231_read(){                              // Read time & calendar data function  //Función de lectura de datos de tiempo y calendario
   i2c_start();                                   // Start I2C protocol  // empieza el i2c
   i2c_write(0xD0);                               // DS3231 address // direccion del DS3231
@@ -199,6 +205,8 @@ void main(){
   lcd_init();                                    // Initialize LCD module //Inicia el modulo LCD
   lcd_putc('\f');                                // LCD clear //Limpio el LCD
   reproduccion_pista(13, 1);
+  enable_interrupts(GLOBAL);                   //Habilitamos todas las interrupciones.
+  enable_interrupts(INT_EXT);                  //Habilitamos especificamente la interrupción externa RB0.
   while(TRUE){
     if(!input(PIN_B1)){                          // If RB1 button is pressed //Si se presiona el botón RB1
       i = 0;
