@@ -1,1 +1,1 @@
-void diez_pulsaciones()
+void diez_pulsaciones(void);
