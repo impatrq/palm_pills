@@ -16,7 +16,7 @@
 #include <lcd.c>
 #use I2C(master, I2C1, FAST = 100000)
 #include "modulo_de_voz.c"
-int1 alarm1_status, alarm2_status;
+#include "buzzer.h"
 char time[]     = "  :  :  ",
      calendar[] = "      /  /20  ",
      alarm1[]   = "A1:   :  :00", alarm2[]   = "A2:   :  :00",
