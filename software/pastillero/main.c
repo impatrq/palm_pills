@@ -16,6 +16,7 @@
 #include <lcd.c>
 #use I2C(master, I2C1, FAST = 100000)
 #include "modulo_de_voz.c"
+int x=0;
 int1 alarm1_status, alarm2_status;
 char time[]     = "  :  :  ",
      calendar[] = "      /  /20  ",
@@ -26,7 +27,13 @@ int8  i, second, minute, hour, day, date, month, year,
       status_reg;
 #INT_EXT                                         // External interrupt routine // interrupcion interna routine
 void ext_isr(void){
-  output_high(PIN_B4);
+     for (x=1; x<=10; x++)
+   {
+   output_high(PIN_A2);
+   delay_ms(1000);
+   output_low(PIN_A2);
+   delay_ms(1000);
+   }
   clear_interrupt(INT_EXT);
 }
 void DS3231_read(){                              // Read time & calendar data function  //Función de lectura de datos de tiempo y calendario
@@ -195,7 +202,7 @@ void main(){
   set_tris_d(0);                                 // Configure all PORTD pins as outputs //Configurar todos los pines de PORTS como salidas
   port_b_pullups(TRUE);                          // Enable PORTB internal pull-ups //Habilitar pull-ups internos PORT
   enable_interrupts(GLOBAL);                     // Enable global interrupts //Habilitar interrupciones globales
-  enable_interrupts(INT_EXT_H2L);                // Enable external interrupt with edge from high to low // Habilita la interrupción externa con borde de mayor a menor
+  enable_interrupts(INT_EXT);                // Enable external interrupt with edge from high to low // Habilita la interrupción externa con borde de mayor a menor
   lcd_init();                                    // Initialize LCD module //Inicia el modulo LCD
   lcd_putc('\f');                                // LCD clear //Limpio el LCD
   reproduccion_pista(13, 1);
