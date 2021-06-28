@@ -17,6 +17,7 @@
 #use I2C(master, I2C1, FAST = 100000)
 #include "modulo_de_voz.c"
 int x=0;
+int z=0; 
 int1 alarm1_status, alarm2_status;
 char time[]     = "  :  :  ",
      calendar[] = "      /  /20  ",
@@ -33,6 +34,14 @@ void ext_isr(void){
    delay_ms(1000);
    output_low(PIN_A2);
    delay_ms(1000);
+   }
+   for (z=1; z<=10; z++)
+   {
+
+   output_high(PIN_A3);
+   delay_ms(10);
+   output_low(PIN_A3);
+   delay_ms(60);
    }
   clear_interrupt(INT_EXT);
 }
