@@ -39,9 +39,9 @@ void ext_isr(void){
    {
 
    output_high(PIN_A3);
-   delay_ms(10);
+   delay_ms(1000);
    output_low(PIN_A3);
-   delay_ms(60);
+   delay_ms(1000);
    }
   clear_interrupt(INT_EXT);
 }
