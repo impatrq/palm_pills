@@ -258,9 +258,11 @@ void main(){
   output_b(0);
   set_tris_b(0x0F);                              //Configurar RB0 ~ 3 como pines de entrada
   set_tris_d(0);                                 //Configurar todos los pines de PORTS como salidas
+  set_tris_a(0b00000011);                      //Establecemos el Puerto a como salida.
   port_b_pullups(TRUE);                          //Habilitar pull-ups internos PORT
 
 //Habilitar las interrupciones
+  ext_int_edge(H_TO_L);                        //Activa la interrupción en RB0 por flanco de bajada.
   enable_interrupts(GLOBAL);                     //Habilitar interrupciones globales
   enable_interrupts(INT_EXT);                    // Habilita la interrupción externa con borde de mayor a menor
 
