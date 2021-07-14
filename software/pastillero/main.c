@@ -8,7 +8,7 @@
 #define LCD_DATA7       PIN_D6
 //End LCD module connections
 
-#include <16F877a.h>                      //incluimos el pic que vamos a usar
+#include <16F1939.h>                      //incluimos el pic que vamos a usar
 #fuses HS,NOWDT,NOPROTECT,NOLVP,PUT                       
 #use delay(clock = 8MHz)
 #use fast_io(B)                           //Establezco que voy a usar el puerto B (es la directiva)
