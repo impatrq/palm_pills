@@ -8,7 +8,7 @@
 #define LCD_DATA7       PIN_D6
 //End LCD module connections
 
-#include <16F1939.h>                      //incluimos el pic que vamos a usar
+#include <16F877a.h>                      //incluimos el pic que vamos a usar
 #fuses HS,NOWDT,NOPROTECT,NOLVP,PUT                       
 #use delay(clock = 8MHz)
 #use fast_io(B)                           //Establezco que voy a usar el puerto B (es la directiva)
@@ -16,7 +16,7 @@
 #use rs232(uart1, baud = 9600)
 #include <lcd.c>                          //incluyo el .c del lcd
 #use I2C(master, I2C1, FAST = 100000)
-#include "modulo_de_voz.c"                //incluyo el .c del modulo de voz
+//#include "modulo_de_voz.c"                //incluyo el .c del modulo de voz
 int x=0;                                  //declaracion de una variable
 int z=0;                                  //declaracion de una variable
 int1 alarm1_status, alarm2_status;        //declaracion de variables
@@ -261,6 +261,7 @@ void main(){
   port_b_pullups(TRUE);                          //Habilitar pull-ups internos PORT
 
 //Habilitar las interrupciones
+  ext_int_edge(H_TO_L);                        
   enable_interrupts(GLOBAL);                     //Habilitar interrupciones globales
   enable_interrupts(INT_EXT);                    // Habilita la interrupción externa con borde de mayor a menor
 
@@ -268,7 +269,7 @@ void main(){
   lcd_init();                                    //Inicia el modulo LCD
   lcd_putc('\f');                                //Limpio el LCD
   
-  reproduccion_pista(13, 1);
+  //reproduccion_pista(13, 1);
   while(TRUE){
     if(!input(PIN_B1)){                          //Si se presiona el botón RB1
       i = 0;
