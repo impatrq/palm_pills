@@ -29,6 +29,20 @@ int8  i, second, minute, hour, day, date, month, year, // declaracion de variabl
       status_reg;                                      // declaracion de variables de 8 byts
 #INT_EXT                                         // External interrupt routine // interrupcion interna routine
 void ext_isr(void){
+   for (x=1; x<=10; x++)
+   {
+   output_high(PIN_A2);
+   delay_ms(10);
+   output_low(PIN_A2);
+   delay_ms(60);
+   }
+  for (z=1; z<=10; z++)
+   {
+   output_high(PIN_A3);
+   delay_ms(10);
+   output_low(PIN_A3);
+   delay_ms(60);
+   }
   clear_interrupt(INT_EXT);
 }
 /*Función de lectura de datos de tiempo y calendario*/
@@ -258,7 +272,8 @@ void main(){
   output_b(0);
   set_tris_b(0x0F);                              //Configurar RB0 ~ 3 como pines de entrada
   set_tris_d(0);                                 //Configurar todos los pines de PORTS como salidas
-  port_b_pullups(TRUE);                          //Habilitar pull-ups internos PORT
+  set_tris_a(0b00000011);   
+  port_b_pullups(TRUE);                          //Habilitar pull-ups internos PORT 
 
 //Habilitar las interrupciones
   ext_int_edge(H_TO_L);                        
