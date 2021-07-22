@@ -8,7 +8,7 @@
 #define LCD_DATA7       PIN_D6
 //End LCD module connections
 
-#include <16F877a.h>                      //incluimos el pic que vamos a usar
+#include <16F1939.h>                      //incluimos el pic que vamos a usar
 #fuses HS,NOWDT,NOPROTECT,NOLVP,PUT                       
 #use delay(clock = 8MHz)
 #use fast_io(B)                           //Establezco que voy a usar el puerto B (es la directiva)
@@ -32,16 +32,16 @@ void ext_isr(void){
    for (x=1; x<=10; x++)
    {
    output_high(PIN_A2);
-   delay_ms(10);
+   delay_ms(250);
    output_low(PIN_A2);
-   delay_ms(60);
+   delay_ms(250);
    }
   for (z=1; z<=10; z++)
    {
    output_high(PIN_A3);
-   delay_ms(10);
+   delay_ms(250);
    output_low(PIN_A3);
-   delay_ms(60);
+   delay_ms(250);
    }
   clear_interrupt(INT_EXT);
 }
@@ -269,6 +269,8 @@ output_low(PIN_B4);                        // Apaga el indicador de alarma
 }
 void main(){
 //Configuracion de puertos 
+  output_low(Pin_a3);
+  output_low(Pin_a2);
   output_b(0);
   set_tris_b(0x0F);                              //Configurar RB0 ~ 3 como pines de entrada
   set_tris_d(0);                                 //Configurar todos los pines de PORTS como salidas
