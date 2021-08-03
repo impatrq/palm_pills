@@ -16,6 +16,7 @@
 #use rs232(uart1, baud = 9600)
 #include <lcd.c>                          //incluyo el .c del lcd
 #use I2C(master, I2C1, FAST = 100000)
+#use rtos(timer = 0, minor_cycle = 10ms)
 //#include "modulo_de_voz.c"                //incluyo el .c del modulo de voz
 int x=0;                                  //declaracion de una variable
 int z=0;                                  //declaracion de una variable
@@ -29,21 +30,7 @@ int8  i, second, minute, hour, day, date, month, year, // declaracion de variabl
       status_reg;                                      // declaracion de variables de 8 byts
 #INT_EXT                                         // External interrupt routine // interrupcion interna routine
 void ext_isr(void){
-   for (x=1; x<=10; x++)
-   {
-   output_high(PIN_A2);
-   delay_ms(250);
-   output_low(PIN_A2);
-   delay_ms(250);
-   }
-  for (z=1; z<=10; z++)
-   {
-   output_high(PIN_A3);
-   delay_ms(250);
-   output_low(PIN_A3);
-   delay_ms(250);
-   }
-  clear_interrupt(INT_EXT);
+z = 10;
 }
 /*Función de lectura de datos de tiempo y calendario*/
 void DS3231_read(){                              //Función de lectura de datos de tiempo y calendario
@@ -267,6 +254,14 @@ output_low(PIN_B4);                        // Apaga el indicador de alarma
       i2c_write(0);                              // Borrar los bits de la bandera de alarma
       i2c_stop();                                // Detener I2C
 }
+#task(rate = 250ms, max = 10ms)                  // 1st RTOS task (executed every 250ms)
+void led1(){
+  if (z<=10 && z>0){ 
+  output_toggle(PIN_A2);
+  output_toggle(PIN_A3);
+  z --;
+}
+}
 void main(){
 //Configuracion de puertos 
   output_low(Pin_a3);
@@ -276,7 +271,6 @@ void main(){
   set_tris_d(0);                                 //Configurar todos los pines de PORTS como salidas
   set_tris_a(0b00000011);   
   port_b_pullups(TRUE);                          //Habilitar pull-ups internos PORT 
-
 //Habilitar las interrupciones
   ext_int_edge(H_TO_L);                        
   enable_interrupts(GLOBAL);                     //Habilitar interrupciones globales
@@ -285,7 +279,6 @@ void main(){
 //Habilito el LCD
   lcd_init();                                    //Inicia el modulo LCD
   lcd_putc('\f');                                //Limpio el LCD
-  
   //reproduccion_pista(13, 1);
   while(TRUE){
     if(!input(PIN_B1)){                          //Si se presiona el botón RB1
@@ -356,7 +349,8 @@ void main(){
         if (input(pin_A1) == 0)
         {
           funcion_gabinete_2();
-        }
+        }    
     delay_ms(50);                                // Wait 50ms // Espera 50ms
   }
+  rtos_run();                                    // Start all the RTOS tasks
 }
