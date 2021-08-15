@@ -16,9 +16,12 @@
 #use rs232(uart1, baud = 9600)
 #include <lcd.c>                          //incluyo el .c del lcd
 #use I2C(master, I2C1, FAST = 100000)
-//#include "modulo_de_voz.c"                //incluyo el .c del modulo de voz
+//#use rtos(timer = 0, minor_cycle = 20ms)
+#include "modulo_de_voz.c"                //incluyo el .c del modulo de voz
 int x=0;                                  //declaracion de una variable
 int z=0;                                  //declaracion de una variable
+int cambiar_hora = 0;
+int cambiar_alarma = 0;
 int1 alarm1_status, alarm2_status;        //declaracion de variables
 char time[]     = "  :  :  ",             // declaracion de alarma tipo char (char representa caracteres individuales)
      calendar[] = "      /  /20  ",       // declaracion de alarma tipo char (char representa caracteres individuales) 
@@ -29,15 +32,13 @@ int8  i, second, minute, hour, day, date, month, year, // declaracion de variabl
       status_reg;                                      // declaracion de variables de 8 byts
 #INT_EXT                                         // External interrupt routine // interrupcion interna routine
 void ext_isr(void){
-   for (x=1; x<=10; x++)
-   {
+  reproduccion_pista(13, 1);
+  for (x=1; x<=10; x++)
+   {  
    output_high(PIN_A2);
    delay_ms(250);
    output_low(PIN_A2);
    delay_ms(250);
-   }
-  for (z=1; z<=10; z++)
-   {
    output_high(PIN_A3);
    delay_ms(250);
    output_low(PIN_A3);
@@ -285,10 +286,11 @@ void main(){
 //Habilito el LCD
   lcd_init();                                    //Inicia el modulo LCD
   lcd_putc('\f');                                //Limpio el LCD
-  
-  //reproduccion_pista(13, 1);
+  //rtos_run();                                    // Start all the RTOS tasks
   while(TRUE){
-    if(!input(PIN_B1)){                          //Si se presiona el botón RB1
+    cambiar_hora = !input(PIN_B1);
+    cambiar_alarma = !input(PIN_B3);
+    if(cambiar_hora){                          //Si se presiona el botón RB1
       i = 0;
       hour   = edit(hour, 1, 1);
       minute = edit(minute, 4, 1);
@@ -322,7 +324,7 @@ void main(){
       //Bloque por bloque
       envio_datos();
     }
-    if(!input(PIN_B3)){                          // Si se presiona el botón RB3
+    if(cambiar_alarma){                          // Si se presiona el botón RB3
       while(!input(PIN_B3));                     // Espere hasta que se suelte el botón RB3
       i = 5;
       alarm1_hour   = edit(alarm1_hour, 25, 1);
@@ -342,9 +344,9 @@ void main(){
     if(!input(PIN_B2) && input(PIN_B4)){         // Cuando se presiona el botón B2 con alarma (Restablecer y apagar la alarma)
     control_de_alarmas_activas();
     }
-    DS3231_read();                               // Leer los parámetros de tiempo y calendario de DS3231 RTC
-    alarms_read_display();                       // Leer y mostrar los parámetros de las alarmas
-    DS3231_display();                            // Mostrar hora y calendario
+    DS3231_read();                               // Leer los parámetros de tiempo y calendario de DS3231 RTC //tarea
+    alarms_read_display();                       // Leer y mostrar los parámetros de las alarmas //tarea
+    DS3231_display();  
     /*Apartir de aca es lo del gabinete, que lo muestra en el display y podes subir y bajar los gabinetes*/
     lcd_putc("Gab:");
     printf(lcd_putc, "%d", A);
