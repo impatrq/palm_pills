@@ -36,13 +36,11 @@ void ext_isr(void){
   for (x=1; x<=10; x++)
    {  
    output_high(PIN_A2);
-   delay_ms(250);
-   output_low(PIN_A2);
-   delay_ms(250);
    output_high(PIN_A3);
-   delay_ms(250);
+   delay_ms(150);
    output_low(PIN_A3);
-   delay_ms(250);
+   output_low(PIN_A2);
+   delay_ms(150);
    }
   clear_interrupt(INT_EXT);
 }
