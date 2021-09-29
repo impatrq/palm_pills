@@ -37,17 +37,21 @@ typedef struct {
 
 DatosGabinetes gabinetes [3];
 
+void reproducir_led (int led) {
+   output_high(led);
+   output_high(BUZZER_ALARMA);
+   delay_ms(150);
+   output_low(BUZZER_ALARMA);
+   output_low(led);
+   delay_ms(150);
+}
+
 void funcion_alarma(){
 int duracion_alarma =0; 
   reproduccion_pista(gabinetes[gabinete_actual].hora, 1);
   for (duracion_alarma=1; duracion_alarma<=CANTIDAD_MAX_DE_REPETICIONES; duracion_alarma++)
-   {  
-   output_high(LED_ALARMA);
-   output_high(BUZZER_ALARMA);
-   delay_ms(150);
-   output_low(BUZZER_ALARMA);
-   output_low(LED_ALARMA);
-   delay_ms(150);
+   {
+   reproducir_led(LED_ALARMA);
    }
   clear_interrupt(INT_EXT);
 }
@@ -425,7 +429,7 @@ void main(){
     /*Apartir de aca es lo del gabinete, que lo muestra en el display y podes subir y bajar los gabinetes*/
     distance_1 = medir_distancia(TRIGGER_DERECHA,ECHO_DERECHA, 1);
     distance_2 = medir_distancia(TRIGGER_IZQUIERDA, ECHO_IZQUIERDA, 2);
-    if (distance_1 <= 5 || distance_2 <=5) {
+    if (distance_1 <= 4 || distance_2 <=4) {
       output_high(DETECTOR_DE_PROXIMIDAD);                         // Agregue yo
       delay_ms(500);                               //Agregue yo
       output_low(DETECTOR_DE_PROXIMIDAD);                          //Agregue yo
