@@ -19,6 +19,8 @@
 #define CONFIG_HORA PIN_B1
 #define CONFIG_ALARMAS PIN_B3
 #define INCREMENTO PIN_B2
+#define LED_ALARMA_2 PIN_A0
+void envio_datos_alarma(int hora, int minutos, int status);
 int duracion_alarma =0;                                  //declaracion de una variable
 int cambiar_hora = 0;
 int cambiar_alarma = 0;
@@ -45,25 +47,32 @@ void reproducir_led (int led) {
    output_low(led);
    delay_ms(150);
 }
-
 void funcion_alarma(){
 int duracion_alarma =0; 
   reproduccion_pista(gabinetes[gabinete_actual].hora, 1);
   for (duracion_alarma=1; duracion_alarma<=CANTIDAD_MAX_DE_REPETICIONES; duracion_alarma++)
    {
-   reproducir_led(LED_ALARMA);
+switch (gabinete_actual){
+   case 0: 
+   reproducir_led (LED_ALARMA);
+   break;
+   case 1:
+   reproducir_led (LED_ALARMA_2);
+   break;
+}
    }
   clear_interrupt(INT_EXT);
 }
 #INT_EXT                                         // External interrupt routine // interrupcion interna routine
 void ext_isr(void){
 funcion_alarma();
+envio_datos_alarma(gabinetes[2].hora, gabinetes[2].minutos, 1);
 }
-/*FunciÃƒÂ³n de lectura de datos de tiempo y calendario*/
+/*FunciÃ³n de lectura de datos de tiempo y calendario*/
 void DS3231_read(){                              //LECTURA DE DATOS DEL DS3231
   i2c_start();                                   // empieza el i2c
   i2c_write(0xD0);                               // Direccion del DS3231
-  i2c_write(0);                                  //se envia la direccion de registro (registro de segundos)
+  i2c_write(0);                                  //se e  nvia la direccion de registro (registro de segundos)
   i2c_start();                                   //inicia i2c
   i2c_write(0xD1);                               // inicia la lectura de datos
   second = i2c_read(1);                          // Lee los segundos del registro 0
@@ -72,7 +81,7 @@ void DS3231_read(){                              //LECTURA DE DATOS DEL DS3231
   day    = i2c_read(1);                          // Lee el dia del registro 3
   date   = i2c_read(1);                          // Lee la fecha del registro 4
   month  = i2c_read(1);                          // Lee el mes del registro 5
-  year   = i2c_read(0);                          //Lee el aÃƒÂ±o del registro 6
+  year   = i2c_read(0);                          //Lee el aÃ±o del registro 6
   i2c_stop();                                    //Detiene el i2c 
 }
 /*Llama a la funcion lectura de alarmas*/
@@ -111,8 +120,8 @@ void alarms_read_display(){                      //LEER Y MOSTRAR LA FUNCION DE 
   alarm2[7]     = gabinetes[2].minutos / 10  + 48;
   alarm2[5]     = gabinetes[2].hora   % 10  + 48;
   alarm2[4]     = gabinetes[2].hora   / 10  + 48;
-  gabinetes[1].status  = bit_test(control_reg, 0);      //Leer el bit de habilitaciÃƒÂ³n de interrupciÃƒÂ³n de alarma1 (A1IE) del registro de control DS3231
-  gabinetes[2].status  = bit_test(control_reg, 1);      //Leer el bit de habilitaciÃƒÂ³n de interrupciÃƒÂ³n de alarma2 (A2IE) del registro de control DS3231
+  gabinetes[1].status  = bit_test(control_reg, 0);      //Leer el bit de habilitaciÃ³n de interrupciÃ³n de alarma1 (A1IE) del registro de control DS3231
+  gabinetes[2].status  = bit_test(control_reg, 1);      //Leer el bit de habilitaciÃ³n de interrupciÃ³n de alarma2 (A2IE) del registro de control DS3231
   if(temperature_msb < 0){
     temperature_msb = abs(temperature_msb);
     temperature[2] = '-';
@@ -183,7 +192,7 @@ void DS3231_display(){                           //SE MUESTRA LOS DATOS DEL DS32
   time[3]     = minute / 10  + 48;
   time[1]     = hour   % 10  + 48;
   time[0]     = hour   / 10  + 48;
-  calendar_display();                            // Llamar a la funciÃƒÂ³n de visualizaciÃƒÂ³n del calendario
+  calendar_display();                            // Llamar a la funciÃ³n de visualizaciÃ³n del calendario
   lcd_gotoxy(1, 1);                              // Ir a la columna 1 fila 1
   printf(lcd_putc, time);                        //Mostrar la variable time
 }
@@ -195,9 +204,9 @@ void blink(){
   }
 }
 int8 edit(parameter, x, y){                      //No entiendo que hace aca
-  while(!input(CONFIG_ALARMAS) || !input(CONFIG_HORA));       //Espera hasta que se suelte el botÃƒÂ³n RB0
+  while(!input(CONFIG_ALARMAS) || !input(CONFIG_HORA));       //Espera hasta que se suelte el botÃ³n RB0
   while(TRUE){
-    while(!input(INCREMENTO)){                       //Si se presiona el botÃƒÂ³n RB2
+    while(!input(INCREMENTO)){                       //Si se presiona el botÃ³n RB2
       parameter++;
       if(((i == 0) || (i == 5)) && parameter > 23)    //Si horas> 23 ==> horas = 0
         parameter = 0;
@@ -207,7 +216,7 @@ int8 edit(parameter, x, y){                      //No entiendo que hace aca
         parameter = 1;
       if(i == 3 && parameter > 12)               //Si mes> 12 ==> mes = 1
         parameter = 1;
-      if(i == 4 && parameter > 99)               // Si aÃƒÂ±o> 99 ==> aÃƒÂ±o = 0
+      if(i == 4 && parameter > 99)               // Si aÃ±o> 99 ==> aÃ±o = 0
         parameter = 0;
       if(i == 7 && parameter > 1)                // Para alarmas ON o OFF (1: alarma ON, 0: alarma OFF)
         parameter = 0;
@@ -226,7 +235,7 @@ int8 edit(parameter, x, y){                      //No entiendo que hace aca
     }
     lcd_gotoxy(x, y);                            //ir a la columna x y la fila y de la pantalla LCD
     lcd_putc("  ");                              //imprime dos espacios
-    if(i == 7) lcd_putc(" ");                    //Espacio de impresiÃƒÂ³n (para activar y desactivar alarmas)
+    if(i == 7) lcd_putc(" ");                    //Espacio de impresiÃ³n (para activar y desactivar alarmas)
     blink();                                     //llamar a la funcion blink
     lcd_gotoxy(x, y);                            //Vaya a la columna x de la pantalla LCD y a la fila y
     if(i == 7){                                  // For alarms ON & OFF // Para alarmas ON y OFF
@@ -240,36 +249,36 @@ int8 edit(parameter, x, y){                      //No entiendo que hace aca
       DS3231_read();
       DS3231_display();}
     if((!input(CONFIG_HORA) && i < 5) || (!input(CONFIG_ALARMAS) && i >= 5)){
-      i++;                                       //Incrementar 'i' para el siguiente parÃƒÂ¡metro
-      return parameter;                          //Devuelve el valor del parÃƒÂ¡metro y sale
+      i++;                                       //Incrementar 'i' para el siguiente parÃ¡metro
+      return parameter;                          //Devuelve el valor del parÃ¡metro y sale
     }
   }
 }
 void envio_datos(){
       i2c_start();                               //Inicia el i2c
       i2c_write(0xD0);                           //direccion del DS3231
-      i2c_write(0);                              //Envia direcciÃƒÂ³n de registro (direcciÃƒÂ³n de segundos)
+      i2c_write(0);                              //Envia direcciÃ³n de registro (direcciÃ³n de segundos)
       i2c_write(0);                              // Restablecer los segundos e iniciar el oscilador
       i2c_write(minute);                         // Escribe el valor de los minutos en DS3231
       i2c_write(hour);                           // Escribe el valor de la hora en DS3231
-      i2c_write(day);                            // Escribe el valor del dÃƒÂ­a
+      i2c_write(day);                            // Escribe el valor del dÃ­a
       i2c_write(date);                           // Escribe el valor de la fecha en DS3231
       i2c_write(month);                          // Escribe el valor del mes en DS3231
-      i2c_write(year);                           /// Escribe el valor del aÃƒÂ±o en DS3231
+      i2c_write(year);                           /// Escribe el valor del aÃ±o en DS3231
       i2c_stop();                                // Detener I2C
 } 
-void envio_datos_alarma(){
+void envio_datos_alarma(int hora, int minutos, int status){
       i2c_start();                               //Empieza el i2c
-      i2c_write(0xD0);                           // DirecciÃƒÂ³n DS3231
-      i2c_write(7);                              // Enviar direcciÃƒÂ³n de registro (alarma1 segundos)
+      i2c_write(0xD0);                           // DirecciÃ³n DS3231
+      i2c_write(7);                              // Enviar direcciÃ³n de registro (alarma1 segundos)
       i2c_write(0);                              // Escribe 0 en alarm1 segundos
-      i2c_write(gabinetes[1].minutos);                  // Escribe el valor de los minutos de alarma1 en DS3231
-      i2c_write(gabinetes[1].hora);                    // Escribe el valor de las horas de alarma1 en DS3231
+      i2c_write(minutos);                  // Escribe el valor de los minutos de alarma1 en DS3231
+      i2c_write(hora);                    // Escribe el valor de las horas de alarma1 en DS3231
       i2c_write(0x80);                           // Alarma1 cuando coinciden las horas, los minutos y los segundos
       i2c_write(gabinetes[2].minutos);                  // Escribe el valor de la minutos de alarma2 en DS3231
       i2c_write(gabinetes[2].hora);                    //Escribe el valor dde hora de alarma 2 en DS3231
       i2c_write(0x80);                           // Alarma2 cuando coinciden las horas y los minutos
-      i2c_write(4 | gabinetes[1].status  | (gabinetes[2].status  << 1)); // Escribe datos en el registro de control DS3231 (habilita la interrupciÃƒÂ³n en caso de alarma)
+      i2c_write(4 | status);//  | (gabinetes[2].status  << 1)); // Escribe datos en el registro de control DS3231 (habilita la interrupciÃ³n en caso de alarma)
       i2c_write(0);                              // Borrar los bits de la bandera de alarma
       i2c_stop();                                // Detener I2C
       delay_ms(200);//esperar 200ms
@@ -278,10 +287,10 @@ void envio_datos_alarma(){
 void control_de_alarmas_activas(){
 output_low(PIN_B4);                        // Apaga el indicador de alarma
       i2c_start();                               // Iniciar I2C
-      i2c_write(0xD0);                           // DirecciÃƒÂ³n DS3231
-      i2c_write(0x0E);                           // Enviar direcciÃƒÂ³n de registro (registro de control)
-      // Escribir datos en el registro de control (apagar la alarma ocurrida y mantener la otra como estÃƒÂ¡)
-      i2c_write(4 | (!bit_test(status_reg, 0) & gabinetes[1].status ) | ((!bit_test(status_reg, 1) & gabinetes[2].status) << 1));
+      i2c_write(0xD0);                           // DirecciÃ³n DS3231
+      i2c_write(0x0E);                           // Enviar direcciÃ³n de registro (registro de control)
+      // Escribir datos en el registro de control (apagar la alarma ocurrida y mantener la otra como estÃ¡)
+      i2c_write(4 | (!bit_test(status_reg, 0) & gabinetes[1].status ) | ((!bit_test(status_reg, 0) & gabinetes[2].status) << 1));
       i2c_write(0);                              // Borrar los bits de la bandera de alarma
       i2c_stop();                                // Detener I2C
 }
@@ -336,7 +345,7 @@ void main(){
 //Habilitar las interrupciones
   ext_int_edge(H_TO_L);                        
   enable_interrupts(GLOBAL);                     //Habilitar interrupciones globales
-  enable_interrupts(INT_EXT);                    // Habilita la interrupciÃƒÂ³n externa con borde de mayor a menor
+  enable_interrupts(INT_EXT);                    // Habilita la interrupciÃ³n externa con borde de mayor a menor
 
 //Habilito el LCD
   lcd_init();                                    //Inicia el modulo LCD
@@ -356,14 +365,14 @@ void main(){
   while(TRUE){
     cambiar_hora= !input(CONFIG_HORA);
     cambiar_alarma = !input(CONFIG_ALARMAS);
-    if(cambiar_hora){                          //Si se presiona el botÃƒÂ³n RB1
+    if(cambiar_hora){                          //Si se presiona el botÃ³n RB1
       i = 0;
       hour   = edit(hour, 1, 1);
       minute = edit(minute, 4, 1);
-      while(!input(CONFIG_HORA));                     //Espere hasta que se suelte el botÃƒÂ³n RB0
+      while(!input(CONFIG_HORA));                     //Espere hasta que se suelte el botÃ³n RB0
       while(TRUE){
-        while(!input(CONFIG_HORA)){                   // Si se presiona el botÃƒÂ³n RB2
-          day++;                                 // DÃƒÂ­a de incremento
+        while(!input(CONFIG_HORA)){                   // Si se presiona el botÃ³n RB2
+          day++;                                 // DÃ­a de incremento
           if(day > 7) day = 1;
           //Muestra
           calendar_display();                    //Llama a mostraar el calendario
@@ -378,7 +387,7 @@ void main(){
       }
       date = edit(date, 5, 2);                   //editar fecha
       month = edit(month, 8, 2);                 //editar mes
-      year = edit(year, 13, 2);                  //editar aÃƒÂ±o
+      year = edit(year, 13, 2);                  //editar aÃ±o
       //convierte de BCD a decimal
       minute = ((minute / 10) << 4) + (minute % 10);
       hour = ((hour / 10) << 4) + (hour % 10);
@@ -390,8 +399,8 @@ void main(){
       //Bloque por bloque
       envio_datos();
     }
-    if(cambiar_alarma){                          // Si se presiona el botÃƒÂ³n RB3
-      while(!input(CONFIG_ALARMAS));                     // Espere hasta que se suelte el botÃƒÂ³n RB3
+    if(cambiar_alarma){                          // Si se presiona el botÃ³n RB3
+      while(!input(CONFIG_ALARMAS));                     // Espere hasta que se suelte el botÃ³n RB3
       i = 5;
       gabinetes[1].hora   = edit(gabinetes[1].hora, 25, 1);
       gabinetes[1].minutos = edit(gabinetes[1].minutos, 28, 1);
@@ -405,7 +414,7 @@ void main(){
       gabinetes[2].minutos = ((gabinetes[2].minutos / 10) << 4) + (gabinetes[2].minutos % 10);
       gabinetes[2].hora   = ((gabinetes[2].hora / 10) << 4) + (gabinetes[2].hora % 10);
       // Write alarms data to DS3231 //Escribir datos de alarmas en DS3231
-    envio_datos_alarma();
+    envio_datos_alarma(gabinetes[1].hora, gabinetes[1].minutos, gabinetes[1].status);
     lcd_gotoxy(10,1);
     printf(lcd_putc, "ALARMA1_h:%d", gabinetes[1].hora);
     delay_ms(1000);
@@ -420,16 +429,16 @@ void main(){
     delay_ms(1000);
     lcd_putc('\f');
     }
-    if(!input(INCREMENTO) && input(PIN_B4)){         // Cuando se presiona el botÃƒÂ³n B2 con alarma (Restablecer y apagar la alarma)
+    if(!input(INCREMENTO) && input(PIN_B4)){         // Cuando se presiona el botÃ³n B2 con alarma (Restablecer y apagar la alarma)
     control_de_alarmas_activas();
     }
-    DS3231_read();                               // Leer los parÃƒÂ¡metros de tiempo y calendario de DS3231 RTC //tarea
-    alarms_read_display();                       // Leer y mostrar los parÃƒÂ¡metros de las alarmas //tarea
+    DS3231_read();                               // Leer los parÃ¡metros de tiempo y calendario de DS3231 RTC //tarea
+    alarms_read_display();                       // Leer y mostrar los parÃ¡metros de las alarmas //tarea
     DS3231_display();
     /*Apartir de aca es lo del gabinete, que lo muestra en el display y podes subir y bajar los gabinetes*/
     distance_1 = medir_distancia(TRIGGER_DERECHA,ECHO_DERECHA, 1);
     distance_2 = medir_distancia(TRIGGER_IZQUIERDA, ECHO_IZQUIERDA, 2);
-    if (distance_1 <= 4 || distance_2 <=4) {
+    if (distance_1 <= 5 || distance_2 <=5) {
       output_high(DETECTOR_DE_PROXIMIDAD);                         // Agregue yo
       delay_ms(500);                               //Agregue yo
       output_low(DETECTOR_DE_PROXIMIDAD);                          //Agregue yo
