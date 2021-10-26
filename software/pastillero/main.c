@@ -48,25 +48,26 @@ void reproducir_led (int led) {
    delay_ms(150);
 }
 void funcion_alarma(){
-int duracion_alarma =0; 
-  reproduccion_pista(gabinetes[gabinete_actual].hora, 1);
-  for (duracion_alarma=1; duracion_alarma<=CANTIDAD_MAX_DE_REPETICIONES; duracion_alarma++)
+   int duracion_alarma =0; 
+   reproduccion_pista(gabinetes[gabinete_actual].hora, 1);
+   for (duracion_alarma=1; duracion_alarma<=CANTIDAD_MAX_DE_REPETICIONES; duracion_alarma++)
    {
-switch (gabinete_actual){
-   case 0: 
-   reproducir_led (LED_ALARMA);
-   break;
-   case 1:
-   reproducir_led (LED_ALARMA_2);
-   break;
-}
-   }
+      switch(gabinete_actual){
+         case 0: 
+            reproducir_led(LED_ALARMA);
+         break;
+         case 1:
+            reproducir_led(LED_ALARMA_2);
+         break;
+      }
+  }
+  gabinete_actual =1;
   clear_interrupt(INT_EXT);
 }
 #INT_EXT                                         // External interrupt routine // interrupcion interna routine
 void ext_isr(void){
-funcion_alarma();
-envio_datos_alarma(gabinetes[2].hora, gabinetes[2].minutos, 1);
+   funcion_alarma();
+   envio_datos_alarma(gabinetes[2].hora, gabinetes[2].minutos, 1);
 }
 /*FunciÃ³n de lectura de datos de tiempo y calendario*/
 void DS3231_read(){                              //LECTURA DE DATOS DEL DS3231
@@ -268,19 +269,19 @@ void envio_datos(){
       i2c_stop();                                // Detener I2C
 } 
 void envio_datos_alarma(int hora, int minutos, int status){
-      i2c_start();                               //Empieza el i2c
-      i2c_write(0xD0);                           // DirecciÃ³n DS3231
-      i2c_write(7);                              // Enviar direcciÃ³n de registro (alarma1 segundos)
-      i2c_write(0);                              // Escribe 0 en alarm1 segundos
-      i2c_write(minutos);                  // Escribe el valor de los minutos de alarma1 en DS3231
-      i2c_write(hora);                    // Escribe el valor de las horas de alarma1 en DS3231
-      i2c_write(0x80);                           // Alarma1 cuando coinciden las horas, los minutos y los segundos
-      i2c_write(gabinetes[2].minutos);                  // Escribe el valor de la minutos de alarma2 en DS3231
-      i2c_write(gabinetes[2].hora);                    //Escribe el valor dde hora de alarma 2 en DS3231
-      i2c_write(0x80);                           // Alarma2 cuando coinciden las horas y los minutos
-      i2c_write(4 | status);//  | (gabinetes[2].status  << 1)); // Escribe datos en el registro de control DS3231 (habilita la interrupciÃ³n en caso de alarma)
-      i2c_write(0);                              // Borrar los bits de la bandera de alarma
-      i2c_stop();                                // Detener I2C
+      i2c_start();                                                //Empieza el i2c
+      i2c_write(0xD0);                                            // DirecciÃ³n DS3231
+      i2c_write(7);                                               // Enviar direcciÃ³n de registro (alarma1 segundos)
+      i2c_write(0);                                               // Escribe 0 en alarm1 segundos
+      i2c_write(minutos);                                         // Escribe el valor de los minutos de alarma1 en DS3231
+      i2c_write(hora);                                            // Escribe el valor de las horas de alarma1 en DS3231
+      i2c_write(0x80);                                            // Alarma1 cuando coinciden las horas, los minutos y los segundos
+      i2c_write(gabinetes[2].minutos);                            // Escribe el valor de la minutos de alarma2 en DS3231
+      i2c_write(gabinetes[2].hora);                               //Escribe el valor dde hora de alarma 2 en DS3231
+      i2c_write(0x80);                                            // Alarma2 cuando coinciden las horas y los minutos
+      i2c_write(4 | status);//  | (gabinetes[2].status  << 1));   // Escribe datos en el registro de control DS3231 (habilita la interrupciÃ³n en caso de alarma)
+      i2c_write(0);                                               // Borrar los bits de la bandera de alarma
+      i2c_stop();                                                 // Detener I2C
       delay_ms(200);//esperar 200ms
       blink (); //(Si o si agregas esto)
 }
