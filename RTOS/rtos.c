@@ -7,5 +7,7 @@
 
 void main(){
 
-    
+    output_b(0);
+    set_tris_b(0);
+    rtos_run();
 }
