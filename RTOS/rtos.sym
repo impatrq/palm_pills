@@ -8,8 +8,10 @@
 01C     CCP_2_HIGH
 020     @CURRENT_TASK
 021-027 @TASKINFO1_2_2_0_0
-028     funcion_alarma.@SCRATCH1
-029     @delay_ms1.P1
+028-02E @TASKINFO2_2_2_0_0
+02F     funcion_alarma_1.@SCRATCH1
+031     funcion_alarma_2.@SCRATCH1
+032     @delay_ms1.P1
 077     @SCRATCH
 078     @SCRATCH
 078     _RETURN_
@@ -21,11 +23,12 @@
 10D-10E @WRITE_PROGRAM_MEMORY8.P2
 
 ROM Allocation:
-0010  @delay_ms1
-000A  funcion_alarma
-002E  MAIN
-0004  @const70
-002E  @cinit
+000C  @delay_ms1
+0020  funcion_alarma_1
+0032  funcion_alarma_2
+0044  MAIN
+0004  @const72
+0044  @cinit
 
 
 User Memory space: 
@@ -51,7 +54,12 @@ Compiler Settings:
     Float,Double:   32,32
 
 Task Schedule:
-     25, ms  funcion_alarma
+     25, ms  funcion_alarma_1
+    Sync to next 25, ms
+     25, ms  funcion_alarma_2
+    Sync to next 25, ms
+    Wait 200, ms
+     25, ms  funcion_alarma_1
     Sync to next 25, ms
     Wait 225, ms
 

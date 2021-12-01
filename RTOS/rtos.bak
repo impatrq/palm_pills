@@ -4,24 +4,22 @@
 #use fast_io(B)
 #use rtos(timer = 0, minor_cycle = 25ms)
    
+#INT_EXT
+void ext_isr(void){
 #task(rate = 250ms, max = 25ms)                  // 1st RTOS task (executed every 250ms)
-void funcion_alarma_1(){
+void funcion_alarma(){
   output_high(PIN_B2);
   output_high(PIN_B1);
   delay_ms(1000);
   output_low(PIN_B2);
   output_low(PIN_B1);
 }
-#task(rate = 500ms, max = 25ms)                  // 1st RTOS task (executed every 250ms)
-void funcion_alarma_2(){
-  output_high(PIN_B4);
-  output_high(PIN_B3);
-  delay_ms(1000);
-  output_low(PIN_B4);
-  output_low(PIN_B3);
 }
 void main(){
     output_b(0);
-    set_tris_b(0);
+    set_tris_b(0b00101001);
+    ext_int_edge(H_TO_L);                        
+    enable_interrupts(GLOBAL);                     //Habilitar interrupciones globales
+    enable_interrupts(INT_EXT);                    // Habilita la interrupción externa con borde de mayor a menor
     rtos_run();
 }
