@@ -1,0 +1,9 @@
+ÀÄrtos
+   ÃÄMAIN  0/138  Ram=0
+   ³  ÃÄ??0??
+   ³  ÃÄ@const72  0/8  Ram=0
+   ³  ÀÄ@const72  0/8  Ram=0
+   ÃÄfuncion_alarma_1  0/18  Ram=1
+   ³  ÀÄ@delay_ms1  0/20  Ram=1
+   ÀÄfuncion_alarma_2  0/18  Ram=1
+      ÀÄ@delay_ms1  0/20  Ram=1
