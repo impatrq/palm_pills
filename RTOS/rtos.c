@@ -7,6 +7,8 @@
 #task(rate = 250ms, max = 25ms)                  // 1st RTOS task (executed every 250ms)
 void led1(){
   output_high(PIN_B0);
+  delay_ms(1000);
+  output_low(PIN_B0);
 }
 void main(){
 
