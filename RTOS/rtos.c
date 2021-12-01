@@ -12,13 +12,14 @@ void funcion_alarma_1(){
   output_low(PIN_B2);
   output_low(PIN_B1);
 }
-#task(rate = 500ms, max = 25ms)                  // 1st RTOS task (executed every 250ms)
-void funcion_alarma_2(){
-  output_high(PIN_B4);
+#task(rate = 750ms, max = 25ms)
+void funcion_alarma_siguiente(){
   output_high(PIN_B3);
+  output_high(PIN_B4);
   delay_ms(1000);
-  output_low(PIN_B4);
   output_low(PIN_B3);
+  output_low(PIN_B4);
+
 }
 void main(){
     output_b(0);
