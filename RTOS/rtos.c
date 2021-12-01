@@ -22,6 +22,6 @@ void funcion_alarma_2(){
 }
 void main(){
     output_b(0);
-    set_tris_b(0);
+    set_tris_b(0b00101001);
     rtos_run();
 }
