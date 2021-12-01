@@ -1,0 +1,174 @@
+CCS PCM C Compiler, Version 4.104, 5967               01-dic.-21 09:09
+
+               Filename: D:\usuarios\alumno\documentos\GitHub\palm_pills\RTOS\rtos.lst
+
+               ROM used: 145 words (2%)
+                         Largest free fragment is 2048
+               RAM used: 13 (4%) at main() level
+                         13 (4%) worst case
+               Stack:    2 worst case (1 in main + 1 for interrupts)
+
+*
+0000:  MOVLW  00
+0001:  MOVWF  0A
+0002:  GOTO   012
+0003:  NOP
+.................... #include <16F887.h> 
+.................... //////// Standard Header file for the PIC16F887 device //////////////// 
+.................... #device PIC16F887 
+.................... #list 
+....................  
+.................... #fuses NOMCLR, NOBROWNOUT, NOLVP, INTRC_IO 
+.................... #use delay(clock = 8MHz) 
+.................... #use fast_io(B) 
+.................... #use rtos(timer = 0, minor_cycle = 25ms) 
+....................  
+.................... #task(rate = 250ms, max = 25ms)                  // 1st RTOS task (executed every 250ms) 
+.................... void led1(){ 
+....................   output_high(PIN_B0); 
+000A:  BSF    06.0
+.................... } 
+000B:  MOVLW  0A
+000C:  MOVWF  26
+000D:  MOVLW  00
+000E:  MOVWF  27
+000F:  BCF    0A.3
+0010:  BCF    0A.4
+0011:  GOTO   080
+.................... void main(){ 
+0012:  CLRF   04
+0013:  BCF    03.7
+0014:  MOVLW  1F
+0015:  ANDWF  03,F
+0016:  MOVLW  71
+0017:  BSF    03.5
+0018:  MOVWF  0F
+0019:  MOVF   0F,W
+001A:  BSF    03.6
+001B:  MOVF   09,W
+001C:  ANDLW  C0
+001D:  MOVWF  09
+001E:  BCF    03.6
+001F:  BCF    1F.4
+0020:  BCF    1F.5
+0021:  MOVLW  00
+0022:  BSF    03.6
+0023:  MOVWF  08
+0024:  BCF    03.5
+0025:  CLRF   07
+0026:  CLRF   08
+0027:  CLRF   09
+....................  
+....................     output_b(0); 
+0028:  BCF    03.6
+0029:  CLRF   06
+....................     set_tris_b(0); 
+002A:  MOVLW  00
+002B:  BSF    03.5
+002C:  MOVWF  06
+....................     rtos_run(); 
+002D:  BCF    03.5
+002E:  CLRF   21
+002F:  CLRF   23
+0030:  MOVLW  0A
+0031:  MOVWF  22
+0032:  CLRF   25
+0033:  CLRF   24
+0034:  MOVLW  0A
+0035:  MOVWF  26
+0036:  MOVLW  00
+0037:  MOVWF  27
+0038:  CLRF   20
+0039:  BSF    03.5
+003A:  MOVF   01,W
+003B:  ANDLW  C0
+003C:  IORLW  07
+003D:  MOVWF  01
+003E:  MOVLW  3D
+003F:  BCF    03.5
+0040:  MOVWF  01
+0041:  BCF    0B.2
+0042:  BSF    03.5
+0043:  MOVF   01,W
+0044:  ANDLW  C0
+0045:  IORLW  07
+0046:  MOVWF  01
+0047:  MOVLW  3D
+0048:  BCF    03.5
+0049:  MOVWF  01
+004A:  BCF    0B.2
+004B:  BCF    03.0
+004C:  RLF    20,W
+004D:  MOVWF  77
+004E:  CALL   004
+004F:  MOVWF  79
+0050:  MOVLW  01
+0051:  ADDWF  77,W
+0052:  CALL   004
+0053:  MOVWF  7A
+0054:  MOVF   79,W
+0055:  MOVWF  04
+0056:  BCF    03.7
+0057:  BTFSC  7A.0
+0058:  BSF    03.7
+0059:  MOVF   00,W
+005A:  MOVWF  79
+005B:  INCF   04,F
+005C:  MOVF   00,W
+005D:  MOVWF  77
+005E:  INCF   04,F
+005F:  MOVF   00,W
+0060:  MOVWF  78
+0061:  INCF   04,F
+0062:  INCF   00,F
+0063:  MOVF   00,W
+0064:  MOVWF  7A
+0065:  BTFSS  03.2
+0066:  GOTO   06A
+0067:  INCF   04,F
+0068:  INCF   00,F
+0069:  DECF   04,F
+006A:  INCF   04,F
+006B:  MOVF   00,W
+006C:  SUBWF  78,W
+006D:  BTFSS  03.2
+006E:  GOTO   082
+006F:  MOVF   77,W
+0070:  SUBWF  7A,W
+0071:  BTFSS  03.2
+0072:  GOTO   082
+0073:  DECF   04,F
+0074:  CLRF   00
+0075:  INCF   04,F
+0076:  CLRF   00
+0077:  INCF   04,F
+0078:  BTFSC  79.7
+0079:  GOTO   082
+007A:  INCF   04,F
+007B:  MOVF   00,W
+007C:  MOVWF  0A
+007D:  DECF   04,F
+007E:  MOVF   00,W
+007F:  MOVWF  02
+0080:  BCF    03.5
+0081:  BCF    03.6
+0082:  INCF   20,F
+0083:  MOVLW  01
+0084:  SUBWF  20,W
+0085:  BTFSS  03.2
+0086:  GOTO   04B
+0087:  CLRF   20
+0088:  MOVF   01,W
+0089:  BTFSS  0B.2
+008A:  GOTO   08D
+008B:  BSF    03.5
+008C:  GOTO   047
+008D:  GOTO   088
+008E:  MOVLW  FF
+008F:  MOVWF  20
+.................... } 
+0090:  SLEEP
+
+Configuration Fuses:
+   Word  1: 2CC4   INTRC_IO NOWDT PUT NOMCLR NOPROTECT NOCPD NOBROWNOUT IESO FCMEN NOLVP NODEBUG
+   Word  2: 3FFF   NOWRT BORV40

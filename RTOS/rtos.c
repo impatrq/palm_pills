@@ -4,7 +4,10 @@
 #use fast_io(B)
 #use rtos(timer = 0, minor_cycle = 50ms)
 
-
+#task(rate = 250ms, max = 50ms)                  // 1st RTOS task (executed every 250ms)
+void led1(){
+  output_high(PIN_B0);
+}
 void main(){
 
     output_b(0);
