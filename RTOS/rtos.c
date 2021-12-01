@@ -14,6 +14,8 @@ void led1(){
 #task(rate = 250ms max = 25ms)
 void buzzer(){
     output_high(PIN_B1);
+    delay_ms(1000);
+    output_low(PIN_B1);
 }
 void main(){
 

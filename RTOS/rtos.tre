@@ -3,6 +3,7 @@
    ³  ÃÄ??0??
    ³  ÃÄ@const72  0/8  Ram=0
    ³  ÀÄ@const72  0/8  Ram=0
-   ÃÄled1  0/34  Ram=1
-   ³  ÀÄ@delay_ms1  (Inline)  Ram=1
-   ÀÄbuzzer  0/8  Ram=0
+   ÃÄled1  0/16  Ram=1
+   ³  ÀÄ@delay_ms1  0/21  Ram=1
+   ÀÄbuzzer  0/16  Ram=1
+      ÀÄ@delay_ms1  0/21  Ram=1

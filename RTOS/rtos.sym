@@ -10,7 +10,8 @@
 021-027 @TASKINFO1_2_2_0_0
 028-02E @TASKINFO2_2_2_0_0
 02F     led1.@SCRATCH1
-030     @delay_ms1.P1
+031     buzzer.@SCRATCH1
+032     @delay_ms1.P1
 077     @SCRATCH
 078     @SCRATCH
 078     _RETURN_
@@ -22,12 +23,12 @@
 10D-10E @WRITE_PROGRAM_MEMORY8.P2
 
 ROM Allocation:
-0011  @delay_ms1
-000C  led1
-002E  buzzer
-0036  MAIN
+000C  @delay_ms1
+0021  led1
+0031  buzzer
+0041  MAIN
 0004  @const72
-0036  @cinit
+0041  @cinit
 
 
 User Memory space: 
@@ -57,7 +58,10 @@ Task Schedule:
     Sync to next 25, ms
      25, ms  buzzer
     Sync to next 25, ms
-    Wait 200, ms
+    Wait 50, ms
+     25, ms  led1
+    Sync to next 25, ms
+    Wait 75, ms
 
 Output Files:
     Errors:      rtos.err

@@ -1,7 +1,7 @@
-D G "__PCM__" 0 25 ""4.104""
-D G "__DEVICE__" 0 25 "887"
-D G "__DATE__" 0 25 ""01-dic.-21""
-D G "__TIME__" 0 25 ""09:21:04"" "Standard Header file for the PIC16F887 device ////////////////"
+D G "__PCM__" 0 27 ""4.104""
+D G "__DEVICE__" 0 27 "887"
+D G "__DATE__" 0 27 ""01-dic.-21""
+D G "__TIME__" 0 27 ""09:30:23"" "Standard Header file for the PIC16F887 device ////////////////"
 d G "PIN_A0" 1 20 "40"
 d G "PIN_A1" 1 21 "41"
 d G "PIN_A2" 1 22 "42"
@@ -275,7 +275,7 @@ d G "INT_RB6" 1 421 "0x0400B08"
 d G "INT_RB7" 1 422 "0x0800B08"
 F G "led1" 0 8 "void()"
 F G "buzzer" 0 15 "void()"
-F G "MAIN" 0 18 "void()"
+F G "MAIN" 0 20 "void()"
 F B "reset_cpu" 0 0
 F B "abs" 1 0
 F B "sleep_ulpwu" 1 0

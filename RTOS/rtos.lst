@@ -1,17 +1,17 @@
-CCS PCM C Compiler, Version 4.104, 5967               01-dic.-21 09:21
+CCS PCM C Compiler, Version 4.104, 5967               01-dic.-21 09:30
 
                Filename: D:\usuarios\alumno\documentos\GitHub\palm_pills\RTOS\rtos.lst
 
-               ROM used: 192 words (2%)
+               ROM used: 203 words (2%)
                          Largest free fragment is 2048
                RAM used: 20 (5%) at main() level
-                         22 (6%) worst case
-               Stack:    2 worst case (1 in main + 1 for interrupts)
+                         24 (7%) worst case
+               Stack:    3 worst case (1 in main + 2 for interrupts)
 
 *
 0000:  MOVLW  00
 0001:  MOVWF  0A
-0002:  GOTO   036
+0002:  GOTO   041
 0003:  NOP
 .................... #include <16F887.h> 
 .................... //////// Standard Header file for the PIC16F887 device //////////////// 
@@ -19,210 +19,220 @@ CCS PCM C Compiler, Version 4.104, 5967               01-dic.-21 09:21
 .................... #list 
 ....................  
 .................... #fuses NOMCLR, NOBROWNOUT, NOLVP, INTRC_IO 
-.................... #use delay(clock = 8MHz) 
-*
-0011:  MOVLW  30
-0012:  MOVWF  04
-0013:  BCF    03.7
-0014:  MOVF   00,W
-0015:  BTFSC  03.2
-0016:  GOTO   024
-0017:  MOVLW  02
-0018:  MOVWF  78
-0019:  CLRF   77
-001A:  DECFSZ 77,F
-001B:  GOTO   01A
-001C:  DECFSZ 78,F
-001D:  GOTO   019
-001E:  MOVLW  97
-001F:  MOVWF  77
-0020:  DECFSZ 77,F
-0021:  GOTO   020
-0022:  DECFSZ 00,F
-0023:  GOTO   017
+.................... #use delay(clock = 4MHz) 
+000C:  MOVLW  32
+000D:  MOVWF  04
+000E:  BCF    03.7
+000F:  MOVF   00,W
+0010:  BTFSC  03.2
+0011:  GOTO   020
+0012:  MOVLW  01
+0013:  MOVWF  78
+0014:  CLRF   77
+0015:  DECFSZ 77,F
+0016:  GOTO   015
+0017:  DECFSZ 78,F
+0018:  GOTO   014
+0019:  MOVLW  4A
+001A:  MOVWF  77
+001B:  DECFSZ 77,F
+001C:  GOTO   01B
+001D:  GOTO   01E
+001E:  DECFSZ 00,F
+001F:  GOTO   012
+0020:  RETURN
 .................... #use fast_io(B) 
 .................... #use rtos(timer = 0, minor_cycle = 25ms) 
 ....................  
-.................... #task(rate = 250ms, max = 25ms)                  // 1st RTOS task (executed every 250ms) 
+.................... #task(rate = 100ms, max = 25ms)                  // 1st RTOS task (executed every 250ms) 
 .................... void led1(){ 
 ....................   output_high(PIN_B0); 
-*
-000C:  BSF    06.0
+0021:  BSF    06.0
 ....................   delay_ms(1000); 
-000D:  MOVLW  04
-000E:  MOVWF  2F
-000F:  MOVLW  FA
-0010:  MOVWF  30
-*
-0024:  DECFSZ 2F,F
-0025:  GOTO   00F
+0022:  MOVLW  04
+0023:  MOVWF  2F
+0024:  MOVLW  FA
+0025:  MOVWF  32
+0026:  CALL   00C
+0027:  DECFSZ 2F,F
+0028:  GOTO   024
 ....................   output_low(PIN_B0); 
-0026:  BCF    06.0
+0029:  BCF    06.0
 .................... } 
-0027:  MOVLW  0C
-0028:  MOVWF  26
-0029:  MOVLW  00
-002A:  MOVWF  27
-002B:  BCF    0A.3
-002C:  BCF    0A.4
-002D:  GOTO   0AF
+002A:  MOVLW  21
+002B:  MOVWF  26
+002C:  MOVLW  00
+002D:  MOVWF  27
+002E:  BCF    0A.3
+002F:  BCF    0A.4
+0030:  GOTO   0BA
 ....................  
-.................... #task(rate = 250ms max = 25ms) 
+.................... #task(rate = 200ms max = 25ms) 
 .................... void buzzer(){ 
 ....................     output_high(PIN_B1); 
-002E:  BSF    06.1
+0031:  BSF    06.1
+....................     delay_ms(1000); 
+0032:  MOVLW  04
+0033:  MOVWF  31
+0034:  MOVLW  FA
+0035:  MOVWF  32
+0036:  CALL   00C
+0037:  DECFSZ 31,F
+0038:  GOTO   034
+....................     output_low(PIN_B1); 
+0039:  BCF    06.1
 .................... } 
-002F:  MOVLW  2E
-0030:  MOVWF  2D
-0031:  MOVLW  00
-0032:  MOVWF  2E
-0033:  BCF    0A.3
-0034:  BCF    0A.4
-0035:  GOTO   0AF
+003A:  MOVLW  31
+003B:  MOVWF  2D
+003C:  MOVLW  00
+003D:  MOVWF  2E
+003E:  BCF    0A.3
+003F:  BCF    0A.4
+0040:  GOTO   0BA
 .................... void main(){ 
-0036:  CLRF   04
-0037:  BCF    03.7
-0038:  MOVLW  1F
-0039:  ANDWF  03,F
-003A:  MOVLW  71
-003B:  BSF    03.5
-003C:  MOVWF  0F
-003D:  MOVF   0F,W
-003E:  BSF    03.6
-003F:  MOVF   09,W
-0040:  ANDLW  C0
-0041:  MOVWF  09
-0042:  BCF    03.6
-0043:  BCF    1F.4
-0044:  BCF    1F.5
-0045:  MOVLW  00
-0046:  BSF    03.6
-0047:  MOVWF  08
-0048:  BCF    03.5
-0049:  CLRF   07
-004A:  CLRF   08
-004B:  CLRF   09
+0041:  CLRF   04
+0042:  BCF    03.7
+0043:  MOVLW  1F
+0044:  ANDWF  03,F
+0045:  MOVLW  61
+0046:  BSF    03.5
+0047:  MOVWF  0F
+0048:  MOVF   0F,W
+0049:  BSF    03.6
+004A:  MOVF   09,W
+004B:  ANDLW  C0
+004C:  MOVWF  09
+004D:  BCF    03.6
+004E:  BCF    1F.4
+004F:  BCF    1F.5
+0050:  MOVLW  00
+0051:  BSF    03.6
+0052:  MOVWF  08
+0053:  BCF    03.5
+0054:  CLRF   07
+0055:  CLRF   08
+0056:  CLRF   09
 ....................  
 ....................     output_b(0); 
-004C:  BCF    03.6
-004D:  CLRF   06
+0057:  BCF    03.6
+0058:  CLRF   06
 ....................     set_tris_b(0); 
-004E:  MOVLW  00
-004F:  BSF    03.5
-0050:  MOVWF  06
+0059:  MOVLW  00
+005A:  BSF    03.5
+005B:  MOVWF  06
 ....................     rtos_run(); 
-0051:  BCF    03.5
-0052:  CLRF   21
-0053:  CLRF   23
-0054:  MOVLW  0A
-0055:  MOVWF  22
-0056:  CLRF   25
-0057:  CLRF   24
-0058:  MOVLW  0C
-0059:  MOVWF  26
-005A:  MOVLW  00
-005B:  MOVWF  27
-005C:  CLRF   28
-005D:  CLRF   2A
-005E:  MOVLW  0A
-005F:  MOVWF  29
-0060:  CLRF   2C
-0061:  MOVLW  01
-0062:  MOVWF  2B
-0063:  MOVLW  2E
-0064:  MOVWF  2D
+005C:  BCF    03.5
+005D:  CLRF   21
+005E:  CLRF   23
+005F:  MOVLW  04
+0060:  MOVWF  22
+0061:  CLRF   25
+0062:  CLRF   24
+0063:  MOVLW  21
+0064:  MOVWF  26
 0065:  MOVLW  00
-0066:  MOVWF  2E
-0067:  CLRF   20
-0068:  BSF    03.5
-0069:  MOVF   01,W
-006A:  ANDLW  C0
-006B:  IORLW  07
-006C:  MOVWF  01
-006D:  MOVLW  3D
-006E:  BCF    03.5
-006F:  MOVWF  01
-0070:  BCF    0B.2
-0071:  BSF    03.5
-0072:  MOVF   01,W
-0073:  ANDLW  C0
-0074:  IORLW  07
-0075:  MOVWF  01
-0076:  MOVLW  3D
-0077:  BCF    03.5
-0078:  MOVWF  01
-0079:  BCF    0B.2
-007A:  BCF    03.0
-007B:  RLF    20,W
-007C:  MOVWF  77
-007D:  CALL   004
-007E:  MOVWF  79
-007F:  MOVLW  01
-0080:  ADDWF  77,W
-0081:  CALL   004
-0082:  MOVWF  7A
-0083:  MOVF   79,W
-0084:  MOVWF  04
-0085:  BCF    03.7
-0086:  BTFSC  7A.0
-0087:  BSF    03.7
-0088:  MOVF   00,W
+0066:  MOVWF  27
+0067:  CLRF   28
+0068:  CLRF   2A
+0069:  MOVLW  08
+006A:  MOVWF  29
+006B:  CLRF   2C
+006C:  MOVLW  01
+006D:  MOVWF  2B
+006E:  MOVLW  31
+006F:  MOVWF  2D
+0070:  MOVLW  00
+0071:  MOVWF  2E
+0072:  CLRF   20
+0073:  BSF    03.5
+0074:  MOVF   01,W
+0075:  ANDLW  C0
+0076:  IORLW  06
+0077:  MOVWF  01
+0078:  MOVLW  3D
+0079:  BCF    03.5
+007A:  MOVWF  01
+007B:  BCF    0B.2
+007C:  BSF    03.5
+007D:  MOVF   01,W
+007E:  ANDLW  C0
+007F:  IORLW  06
+0080:  MOVWF  01
+0081:  MOVLW  3D
+0082:  BCF    03.5
+0083:  MOVWF  01
+0084:  BCF    0B.2
+0085:  BCF    03.0
+0086:  RLF    20,W
+0087:  MOVWF  77
+0088:  CALL   004
 0089:  MOVWF  79
-008A:  INCF   04,F
-008B:  MOVF   00,W
-008C:  MOVWF  77
-008D:  INCF   04,F
-008E:  MOVF   00,W
-008F:  MOVWF  78
-0090:  INCF   04,F
-0091:  INCF   00,F
-0092:  MOVF   00,W
-0093:  MOVWF  7A
-0094:  BTFSS  03.2
-0095:  GOTO   099
-0096:  INCF   04,F
-0097:  INCF   00,F
-0098:  DECF   04,F
-0099:  INCF   04,F
-009A:  MOVF   00,W
-009B:  SUBWF  78,W
-009C:  BTFSS  03.2
-009D:  GOTO   0B1
-009E:  MOVF   77,W
-009F:  SUBWF  7A,W
-00A0:  BTFSS  03.2
-00A1:  GOTO   0B1
-00A2:  DECF   04,F
-00A3:  CLRF   00
+008A:  MOVLW  01
+008B:  ADDWF  77,W
+008C:  CALL   004
+008D:  MOVWF  7A
+008E:  MOVF   79,W
+008F:  MOVWF  04
+0090:  BCF    03.7
+0091:  BTFSC  7A.0
+0092:  BSF    03.7
+0093:  MOVF   00,W
+0094:  MOVWF  79
+0095:  INCF   04,F
+0096:  MOVF   00,W
+0097:  MOVWF  77
+0098:  INCF   04,F
+0099:  MOVF   00,W
+009A:  MOVWF  78
+009B:  INCF   04,F
+009C:  INCF   00,F
+009D:  MOVF   00,W
+009E:  MOVWF  7A
+009F:  BTFSS  03.2
+00A0:  GOTO   0A4
+00A1:  INCF   04,F
+00A2:  INCF   00,F
+00A3:  DECF   04,F
 00A4:  INCF   04,F
-00A5:  CLRF   00
-00A6:  INCF   04,F
-00A7:  BTFSC  79.7
-00A8:  GOTO   0B1
-00A9:  INCF   04,F
-00AA:  MOVF   00,W
-00AB:  MOVWF  0A
-00AC:  DECF   04,F
-00AD:  MOVF   00,W
-00AE:  MOVWF  02
-00AF:  BCF    03.5
-00B0:  BCF    03.6
-00B1:  INCF   20,F
-00B2:  MOVLW  02
-00B3:  SUBWF  20,W
-00B4:  BTFSS  03.2
-00B5:  GOTO   07A
-00B6:  CLRF   20
-00B7:  MOVF   01,W
-00B8:  BTFSS  0B.2
-00B9:  GOTO   0BC
-00BA:  BSF    03.5
-00BB:  GOTO   076
-00BC:  GOTO   0B7
-00BD:  MOVLW  FF
-00BE:  MOVWF  20
+00A5:  MOVF   00,W
+00A6:  SUBWF  78,W
+00A7:  BTFSS  03.2
+00A8:  GOTO   0BC
+00A9:  MOVF   77,W
+00AA:  SUBWF  7A,W
+00AB:  BTFSS  03.2
+00AC:  GOTO   0BC
+00AD:  DECF   04,F
+00AE:  CLRF   00
+00AF:  INCF   04,F
+00B0:  CLRF   00
+00B1:  INCF   04,F
+00B2:  BTFSC  79.7
+00B3:  GOTO   0BC
+00B4:  INCF   04,F
+00B5:  MOVF   00,W
+00B6:  MOVWF  0A
+00B7:  DECF   04,F
+00B8:  MOVF   00,W
+00B9:  MOVWF  02
+00BA:  BCF    03.5
+00BB:  BCF    03.6
+00BC:  INCF   20,F
+00BD:  MOVLW  02
+00BE:  SUBWF  20,W
+00BF:  BTFSS  03.2
+00C0:  GOTO   085
+00C1:  CLRF   20
+00C2:  MOVF   01,W
+00C3:  BTFSS  0B.2
+00C4:  GOTO   0C7
+00C5:  BSF    03.5
+00C6:  GOTO   081
+00C7:  GOTO   0C2
+00C8:  MOVLW  FF
+00C9:  MOVWF  20
 .................... } 
-00BF:  SLEEP
+00CA:  SLEEP
 
 Configuration Fuses:
    Word  1: 2CC4   INTRC_IO NOWDT PUT NOMCLR NOPROTECT NOCPD NOBROWNOUT IESO FCMEN NOLVP NODEBUG
