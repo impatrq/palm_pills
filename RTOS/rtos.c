@@ -2,9 +2,9 @@
 #fuses NOMCLR, NOBROWNOUT, NOLVP, INTRC_IO
 #use delay(clock = 8MHz)
 #use fast_io(B)
-#use rtos(timer = 0, minor_cycle = 50ms)
+#use rtos(timer = 0, minor_cycle = 25ms)
 
-#task(rate = 250ms, max = 50ms)                  // 1st RTOS task (executed every 250ms)
+#task(rate = 250ms, max = 25ms)                  // 1st RTOS task (executed every 250ms)
 void led1(){
   output_high(PIN_B0);
 }
