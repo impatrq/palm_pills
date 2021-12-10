@@ -8,7 +8,7 @@ Este es el repositorio del equipo Palm Pills
 - Alfredo Juan Diego 
 - Boiero  Joaquin
 - Diaz Mauro
-- Otero 
+- Otero Matias
 - Pagnoni
 
 ## Funcionalidades:
