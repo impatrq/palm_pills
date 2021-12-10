@@ -5,8 +5,8 @@ Este es el repositorio del equipo Palm Pills
 - pcb de circuitos
 
 ## Integrantes:
-- Alfredo
-- Boiero
+- Alfredo Juan Diego 
+- Boiero 
 - Diaz
 - Otero
 - Pagnoni
