@@ -7,8 +7,8 @@ Este es el repositorio del equipo Palm Pills
 ## Integrantes:
 - Alfredo Juan Diego 
 - Boiero  Joaquin
-- Diaz
-- Otero
+- Diaz Mauro
+- Otero 
 - Pagnoni
 
 ## Funcionalidades:
