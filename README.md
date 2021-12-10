@@ -9,7 +9,7 @@ Este es el repositorio del equipo Palm Pills
 - Boiero  Joaquin
 - Diaz Mauro
 - Otero Matias
-- Pagnoni
+- Pagnoni Augusto
 
 ## Funcionalidades:
 - programación de alarma
